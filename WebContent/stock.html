@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	<meta charset="UTF-8"> 
+		<style>
+			#d1{
+				width:500px;
+				height:300px;
+				border:1px solid red;
+				background-color:black;
+				margin-left:400px;
+				margin-top:20px;
+			}
+			#d2{
+				height:35px;
+				background-color:red;
+				color:yellow;
+			}
+			table{
+				color:white;
+				font-style:italic;
+				font-size:22px;
+			}
+		</style>
+		<script type="text/javascript" 
+		src="js/jquery-1.11.1.js"></script>
+		
+		<script type="text/javascript">
+			function showStock(){
+				setInterval(f1,5000);
+			}	
+			//jquery的ajax方法
+			function f1(){
+			 	$.get(
+					"quoto.do",
+					function(result){
+						//alert(typeof result);返回的是json字符串
+						//json字符串转换为js对象，这里arr是数字对象
+						var arr = JSON.parse(result);
+						var trs = '';
+						for(i = 0; i < arr.length; i ++){
+							var s = arr[i];
+							trs += '<tr><td>' + s.code 
+							+ '</td><td> ' + s.name 
+							+ '</td><td> ' + s.price + '</td></tr>';
+						}
+						//ie: table,tbody,thead,tr都不能
+						//用innerHTML来赋值，只有td能用。
+						$('#tb1').html(trs);
+					}
+				); 
+				
+				
+				/* $.ajax({
+						url:"quoto.do",
+						method:"get",
+						success:function(result){
+							//alert(typeof result);返回的是json字符串
+							//json字符串转换为js对象，这里arr是数字对象
+							var arr = JSON.parse(result);
+							var trs = '';
+							for(i = 0; i < arr.length; i ++){
+								var s = arr[i];
+								trs += '<tr><td>' + s.code 
+								+ '</td><td> ' + s.name 
+								+ '</td><td> ' + s.price + '</td></tr>';
+							}
+							//ie: table,tbody,thead,tr都不能
+							//用innerHTML来赋值，只有td能用。
+							$('#tb1').html(trs);
+						}
+				}); */
+			}
+		</script>
+	</head>
+	<body style="font-size:30px;" onload="showStock();">
+		<div id="d1">
+			<div id="d2">股票实时行情</div>
+			<div id="d3">
+				<table width="100%">
+					<thead>
+						<tr><td>代码</td><td>名称</td><td>价格</td></tr>
+					</thead>
+					<tbody id="tb1">
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</body>
+</html>
